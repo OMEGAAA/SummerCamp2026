@@ -4,7 +4,7 @@
 
 ## 公開URL
 
-https://omegaaa.github.io/summerCamp2026/
+https://omegaaa.github.io/SummerCamp2026/
 
 - 管理ページ（空き状況の編集）: 上記URL末尾に `#admin` を付与
 
