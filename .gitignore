@@ -1,0 +1,16 @@
+# 依存関係
+node_modules/
+
+# ビルド出力（CI が npm run build で生成・公開するため、リポジトリには含めない）
+dist/
+/index.html
+/assets/
+
+# QA・作業用の生成物
+qa-screenshots/
+file-open-check.png
+
+# その他
+*.log
+.DS_Store
+Thumbs.db
