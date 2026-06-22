@@ -525,7 +525,7 @@ a {
 
 .calendar-head {
   display: grid;
-  grid-template-columns: 112px repeat(7, 1fr);
+  grid-template-columns: 184px repeat(7, 1fr);
   min-height: 44px;
   border-bottom: 1px solid #bdc6bf;
   background: #f6f8f7;
