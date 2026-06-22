@@ -14,12 +14,13 @@ import {
   SlidersHorizontal,
   Sparkle,
   UsersThree,
-  Warning,
-  X,
 } from "@phosphor-icons/react";
-import logoSrc from "./assets/arrows-logo.png";
 import heroSrc from "./assets/training-hero.jpg";
 import footerSrc from "./assets/training-footer.jpg";
+import step1Src from "./assets/reserve-step1.jpg";
+import step2Src from "./assets/reserve-step2.jpg";
+import step3Src from "./assets/reserve-step3.jpg";
+import step4Src from "./assets/reserve-step4.jpg";
 import {
   days,
   timeRows,
@@ -39,12 +40,41 @@ const classTypes = [
 
 const initialSelected = makeSlot(18, "tue", "pm");
 
+// 申し込みは外部の予約サイト(hacomono)へ遷移する。
+const RESERVE_URL = "https://center-agk-sp-science.hacomono.jp/home";
+
+// 予約サイトでの申し込み手順（スクリーンショット付き）。
+const reserveSteps = [
+  {
+    num: 1,
+    img: step1Src,
+    title: "ログインして「予約」を開く",
+    text: "予約サイトにログイン（未登録の方は会員登録）し、メニューから「予約」を選びます。",
+  },
+  {
+    num: 2,
+    img: step2Src,
+    title: "アローズエリアを選ぶ",
+    text: "エリアで「アローズエリア」を選び、希望の日付・時間のレッスンを選択します。",
+  },
+  {
+    num: 3,
+    img: step3Src,
+    title: "内容を確認して進む",
+    text: "レッスン内容と空き状況を確認し、「チケットを購入して予約する」へ進みます。",
+  },
+  {
+    num: 4,
+    img: step4Src,
+    title: "チケット購入で予約完了",
+    text: "チケットを選び、支払い方法を選択して予約を確定します。",
+  },
+];
+
 export function App() {
   const [activeType, setActiveType] = useState("run");
   const [selectedSlot, setSelectedSlot] = useState(initialSelected);
   const [gradeFilter, setGradeFilter] = useState("all");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [toast, setToast] = useState("");
   const [openFaq, setOpenFaq] = useState("faq-1");
 
   const selectedType = classTypes.find((type) => type.id === activeType);
@@ -88,19 +118,14 @@ export function App() {
   }
 
   function applyNow() {
-    setModalOpen(true);
-  }
-
-  function formHandoff() {
-    setToast("Google Form URLを設定すると、選択中のクラス情報を引き継いで遷移できます。");
-    setTimeout(() => setToast(""), 3600);
+    window.open(RESERVE_URL, "_blank", "noopener,noreferrer");
   }
 
   return (
     <main className="site-shell">
       <header className="topbar">
-        <a className="brand" href="#top" aria-label="アローズ栃木店 トップ">
-          <img src={logoSrc} alt="ARROWS 栃木店" />
+        <a className="brand" href="#top" aria-label="エイジェックスポーツ科学総合センター トップ">
+          <span className="brand-name">エイジェックスポーツ科学総合センター</span>
         </a>
         <nav className="nav-links" aria-label="主要ナビゲーション">
           <a href="#features"><Sparkle size={18} weight="fill" />特徴</a>
@@ -110,7 +135,7 @@ export function App() {
         </nav>
         <button className="deadline-button" onClick={applyNow}>
           <CalendarCheck size={24} weight="fill" />
-          <span><strong>7月31日 締切</strong><small>お早めにお申し込みください</small></span>
+          <span><strong>各回３日前締切</strong><small>お早めにお申し込みください</small></span>
         </button>
       </header>
 
@@ -122,11 +147,11 @@ export function App() {
           <p className="hero-target">小学生・中学生対象</p>
           <div className="hero-meta">
             <span><CalendarCheck size={21} weight="fill" />8月1日(土) - 8月31日(月)</span>
-            <span><MapPin size={21} weight="fill" />アローズ栃木店</span>
+            <span><MapPin size={21} weight="fill" />エイジェックスポーツ科学総合センター</span>
           </div>
           <div className="hero-actions">
             <a className="primary-cta" href="#booking">空き状況を確認<CaretRight size={22} weight="bold" /></a>
-            <button className="ghost-cta" onClick={applyNow}>Google Formで申し込み</button>
+            <button className="ghost-cta" onClick={applyNow}>予約サイトで申し込み</button>
           </div>
         </div>
         <div className="hero-visual" aria-hidden="true">
@@ -270,10 +295,33 @@ export function App() {
         </div>
       </section>
 
+      <section id="reserve-steps" className="steps-section">
+        <div className="section-heading">
+          <p>HOW TO RESERVE</p>
+          <h2>予約サイトでの申し込み手順</h2>
+        </div>
+        <div className="steps-grid">
+          {reserveSteps.map((step) => (
+            <article className="step-card" key={step.num}>
+              <div className="step-shot">
+                <span className="step-num">{step.num}</span>
+                <img src={step.img} alt={`手順${step.num}：${step.title}`} loading="lazy" />
+              </div>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </article>
+          ))}
+        </div>
+        <div className="steps-cta">
+          <button className="primary-cta" onClick={applyNow}>予約サイトを開く<CaretRight size={22} weight="bold" /></button>
+          <small>※ ご予約には予約サイト（hacomono）の会員登録・チケット購入が必要です。</small>
+        </div>
+      </section>
+
       <section className="reason-section">
         <div className="section-heading">
-          <p>WHY ARROWS</p>
-          <h2>アローズの夏期講習が選ばれる理由</h2>
+          <p>WHY US</p>
+          <h2>エイジェックスポーツ科学総合センターの夏期講習が選ばれる理由</h2>
         </div>
         <div className="reason-grid">
           <Reason icon={Medal} title="専門コーチの指導" text="走り方・アジリティの専門コーチが一人ひとりを丁寧に指導。" />
@@ -296,11 +344,11 @@ export function App() {
         <div className="price-cards">
           <article>
             <span>ビジター</span>
-            <strong>2,000<small>円 / 1回</small></strong>
+            <strong>2,200<small>円（税込）/ 　1回</small></strong>
           </article>
           <article className="member">
             <span>ジム会員</span>
-            <strong>1,500<small>円 / 1回</small></strong>
+            <strong>1,500<small>円（税込）/ 　1回</small></strong>
           </article>
         </div>
         <img className="price-image" src={footerSrc} alt="トレーニング中の選手" />
@@ -313,7 +361,7 @@ export function App() {
         </div>
         <div className="faq-list">
           {[
-            ["faq-1", "申し込み方法を教えてください", "Google Formからお申し込みください。実公開時は申込フォームのURLをボタンに設定します。"],
+            ["faq-1", "申し込み方法を教えてください", "予約サイトからお申し込みください。各申し込みボタンから予約サイト（hacomono）に移動できます。"],
             ["faq-2", "小学生と中学生で時間は違いますか？", "小学生は10:00-11:00または13:30-14:30、中学生は15:00-16:00です。"],
             ["faq-3", "定員は何名ですか？", "各クラス10名です。定員に達し次第、受付終了となります。"],
           ].map(([id, question, answer]) => (
@@ -331,50 +379,19 @@ export function App() {
       <section className="final-cta">
         <CalendarCheck size={58} weight="fill" />
         <div>
-          <h2>Google Formで申し込み</h2>
+          <h2>予約サイトで申し込み</h2>
           <p>クラスを選んで、空き状況を確認してからお申し込みください。</p>
         </div>
         <button onClick={applyNow}>申し込みへ進む<CaretRight size={22} weight="bold" /></button>
-        <strong>7月31日 締切</strong>
+        <strong>各回3日前締切</strong>
       </section>
 
       <footer className="site-footer">
-        <img src={logoSrc} alt="ARROWS 栃木店" />
+        <span className="footer-name">エイジェックスポーツ科学総合センター</span>
         <span>夏休み期間限定 夏期講習</span>
         <a href="#faq">よくある質問</a>
         <button onClick={applyNow}>お問い合わせ</button>
       </footer>
-
-      {modalOpen && (
-        <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-          <div className="apply-modal">
-            <button className="modal-close" onClick={() => setModalOpen(false)} aria-label="閉じる"><X size={22} weight="bold" /></button>
-            <p className="panel-kicker">申し込み内容</p>
-            <h2 id="modal-title">Google Formへ進む前に確認</h2>
-            <div className="modal-summary">
-              <span>{classLabel(selectedSlot)}</span>
-              <strong>8月{selectedSlot.date}日 {selectedSlot.time}</strong>
-              <small>残り{selectedSlot.remaining}名 / 定員10名</small>
-            </div>
-            <label>
-              学年
-              <select defaultValue="">
-                <option value="" disabled>選択してください</option>
-                <option>小学1-3年生</option>
-                <option>小学4-6年生</option>
-                <option>中学生</option>
-              </select>
-            </label>
-            <label>
-              参加者名
-              <input placeholder="お名前" />
-            </label>
-            <button className="form-button" onClick={formHandoff}>Google Formへ進む<CaretRight size={22} weight="bold" /></button>
-          </div>
-        </div>
-      )}
-
-      {toast && <div className="toast" role="status"><Warning size={19} weight="fill" />{toast}</div>}
     </main>
   );
 }
