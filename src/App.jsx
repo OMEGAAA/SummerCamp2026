@@ -16,7 +16,7 @@ import {
   UsersThree,
 } from "@phosphor-icons/react";
 import heroSrc from "./assets/training-hero.jpg";
-import priceSrc from "./assets/price-training.jpg";
+import priceSrc from "./assets/price-training.png";
 import {
   days,
   timeRows,
