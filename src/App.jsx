@@ -6,6 +6,7 @@ import {
   Clock,
   Funnel,
   Lightning,
+  ListChecks,
   MapPin,
   Medal,
   PersonSimpleRun,
@@ -17,6 +18,10 @@ import {
 } from "@phosphor-icons/react";
 import heroSrc from "./assets/training-hero.jpg";
 import priceSrc from "./assets/price-training.jpg";
+import reserveStep1 from "./assets/reserve-step1.jpg";
+import reserveStep2 from "./assets/reserve-step2.jpg";
+import reserveStep3 from "./assets/reserve-step3.jpg";
+import reserveStep4 from "./assets/reserve-step4.jpg";
 import {
   days,
   timeRows,
@@ -36,6 +41,33 @@ const classTypes = [
 
 const initialSelected = makeSlot(18, "tue", "pm");
 const RESERVATION_SITE_URL = "https://center-agk-sp-science.hacomono.jp/home";
+
+const reserveSteps = [
+  {
+    img: reserveStep1,
+    alt: "予約サイトのメニュー画面",
+    title: "予約サイトにログイン",
+    text: "メニューを開き「予約」をタップ。初めての方は会員登録（無料）からお願いします。",
+  },
+  {
+    img: reserveStep2,
+    alt: "クラスの日時を選ぶカレンダー画面",
+    title: "クラス・日時を選ぶ",
+    text: "「アローズエリア」を選び、カレンダーから希望の日時・クラスをタップします。",
+  },
+  {
+    img: reserveStep3,
+    alt: "レッスン詳細とチケット購入の画面",
+    title: "レッスン内容を確認",
+    text: "残りの予約可能数を確認し「チケットを購入して予約する」へ進みます。",
+  },
+  {
+    img: reserveStep4,
+    alt: "チケットを選択して購入する画面",
+    title: "チケットを購入して完了",
+    text: "チケットを選択し、お支払い情報を入力すると予約完了です。",
+  },
+];
 
 export function App() {
   const [activeType, setActiveType] = useState("run");
@@ -96,6 +128,7 @@ export function App() {
         <nav className="nav-links" aria-label="主要ナビゲーション">
           <a href="#features"><Sparkle size={18} weight="fill" />特徴</a>
           <a href="#booking"><CalendarCheck size={18} weight="fill" />クラス選択</a>
+          <a href="#steps"><ListChecks size={18} weight="fill" />予約方法</a>
           <a href="#price"><SlidersHorizontal size={18} weight="fill" />料金</a>
           <a href="#faq"><Question size={18} weight="fill" />FAQ</a>
         </nav>
@@ -258,6 +291,31 @@ export function App() {
               <p>フォーム改善と加速力、または切り返し能力を目的に合わせて選べます。</p>
             </div>
           </aside>
+        </div>
+      </section>
+
+      <section id="steps" className="steps-section">
+        <div className="section-heading">
+          <p>STEP 2</p>
+          <h2>予約方法</h2>
+        </div>
+        <div className="steps-grid">
+          {reserveSteps.map((step, index) => (
+            <article className="step-card" key={step.title}>
+              <div className="step-shot">
+                <span className="step-num">{index + 1}</span>
+                <img src={step.img} alt={step.alt} loading="lazy" />
+              </div>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </article>
+          ))}
+        </div>
+        <div className="steps-cta">
+          <button className="primary-cta" onClick={applyNow}>
+            予約サイトへ進む<CaretRight size={22} weight="bold" />
+          </button>
+          <small>各回3日前締切です。お早めにお申し込みください。</small>
         </div>
       </section>
 
