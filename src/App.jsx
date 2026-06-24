@@ -348,7 +348,7 @@ export function App() {
             <strong>2,200<small>円（税込）/ 　1回</small></strong>
           </article>
           <article className="member">
-            <span>ジム会員</span>
+            <span>アローズ会員</span>
             <strong>1,650<small>円（税込）/ 　1回</small></strong>
           </article>
         </div>
