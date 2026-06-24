@@ -8,6 +8,8 @@ When implementing from a selected generated mock, treat that image as the source
 
 ## Project decisions
 
+- Hero season badge text should use dark text on the lime background for readability.
+
 - ヘッダー左上のブランド表記は「エイジェックスポーツ科学総合センター」にする。
 - 予約導線は Google Form ではなく予約サイト `https://center-agk-sp-science.hacomono.jp/home` に遷移する。
 - 予約導線は確認モーダルを挟まず、クリック時に直接外部の予約サイトを開く。
