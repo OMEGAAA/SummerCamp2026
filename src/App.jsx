@@ -99,7 +99,7 @@ export function App() {
     <main className="site-shell">
       <header className="topbar">
         <a className="brand" href="#top" aria-label="アローズ栃木店 トップ">
-          <span className="brand-name">ARROWS<br />栃木店</span>
+          <span className="brand-name">エイジェックスポーツ科学総合センター<br />夏期講習</span>
         </a>
         <nav className="nav-links" aria-label="主要ナビゲーション">
           <a href="#features"><Sparkle size={18} weight="fill" />特徴</a>
@@ -271,8 +271,8 @@ export function App() {
 
       <section className="reason-section">
         <div className="section-heading">
-          <p>WHY ARROWS</p>
-          <h2>アローズの夏期講習が選ばれる理由</h2>
+          <p>WHY SUMMER CAMP</p>
+          <h2>夏期講習の3つのポイント</h2>
         </div>
         <div className="reason-grid">
           <Reason icon={Medal} title="専門コーチの指導" text="アローズ栃木のスポーツ科学トレーナーが一人ひとりを丁寧に指導。" />
