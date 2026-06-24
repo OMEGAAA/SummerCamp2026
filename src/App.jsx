@@ -113,7 +113,7 @@ export function App() {
           <p className="hero-target">小学生・中学生対象</p>
           <div className="hero-meta">
             <span><CalendarCheck size={21} weight="fill" />8月1日(土) - 8月31日(月)</span>
-            <span><MapPin size={21} weight="fill" />アローズ栃木店</span>
+            <span><MapPin size={21} weight="fill" />エイジェックスポーツ科学総合センター</span>
           </div>
           <div className="hero-actions">
             <a className="primary-cta" href="#booking">空き状況を確認<CaretRight size={22} weight="bold" /></a>
