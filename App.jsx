@@ -18,7 +18,7 @@ import {
   X,
 } from "@phosphor-icons/react";
 import heroSrc from "./assets/training-hero.jpg";
-import footerSrc from "./assets/training-footer.jpg";
+import priceSrc from "./assets/price-training.jpg";
 import {
   days,
   timeRows,
@@ -37,6 +37,7 @@ const classTypes = [
 ];
 
 const initialSelected = makeSlot(18, "tue", "pm");
+const RESERVATION_SITE_URL = "https://center-agk-sp-science.hacomono.jp/home";
 
 export function App() {
   const [activeType, setActiveType] = useState("run");
@@ -91,8 +92,7 @@ export function App() {
   }
 
   function formHandoff() {
-    setToast("Google Form URLを設定すると、選択中のクラス情報を引き継いで遷移できます。");
-    setTimeout(() => setToast(""), 3600);
+    window.open(RESERVATION_SITE_URL, "_blank", "noopener,noreferrer");
   }
 
   return (
@@ -302,7 +302,7 @@ export function App() {
             <strong>1,650<small>円（税込）/ 　1回</small></strong>
           </article>
         </div>
-        <img className="price-image" src={footerSrc} alt="トレーニング中の選手" />
+        <img className="price-image" src={priceSrc} alt="トレーニング中の選手" />
       </section>
 
       <section id="faq" className="faq-section">
@@ -330,7 +330,7 @@ export function App() {
       <section className="final-cta">
         <CalendarCheck size={58} weight="fill" />
         <div>
-          <h2>Google Formで申し込み</h2>
+          <h2>予約サイトで申し込み</h2>
           <p>クラスを選んで、空き状況を確認してからお申し込みください。</p>
         </div>
         <button onClick={applyNow}>申し込みへ進む<CaretRight size={22} weight="bold" /></button>
@@ -368,7 +368,7 @@ export function App() {
               参加者名
               <input placeholder="お名前" />
             </label>
-            <button className="form-button" onClick={formHandoff}>Google Formへ進む<CaretRight size={22} weight="bold" /></button>
+            <button className="form-button" onClick={formHandoff}>予約サイトへ進む<CaretRight size={22} weight="bold" /></button>
           </div>
         </div>
       )}
