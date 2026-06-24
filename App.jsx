@@ -272,7 +272,7 @@ export function App() {
       <section className="reason-section">
         <div className="section-heading">
           <p>WHY ARROWS</p>
-          <h2>アローズの夏期講習が選ばれる理由</h2>
+          <h2>アローズ夏期講習の3つのポイント</h2>
         </div>
         <div className="reason-grid">
           <Reason icon={Medal} title="専門コーチの指導" text="アローズ栃木のスポーツ科学トレーナーが一人ひとりを丁寧に指導。" />
