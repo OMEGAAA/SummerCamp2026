@@ -338,7 +338,7 @@ export function App() {
       </section>
 
       <footer className="site-footer">
-        <span className="footer-name">ARROWS<br />栃木店</span>
+        <span className="footer-name">エイジェックスポーツ科学<br />総合センター</span>
         <span>夏休み期間限定 夏期講習</span>
         <a href="#faq">よくある質問</a>
         <button onClick={applyNow}>お問い合わせ</button>
