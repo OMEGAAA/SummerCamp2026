@@ -330,7 +330,7 @@ export function App() {
       <section className="final-cta">
         <CalendarCheck size={58} weight="fill" />
         <div>
-          <h2>Google Formで申し込み</h2>
+          <h2>予約サイトで申し込み</h2>
           <p>クラスを選んで、空き状況を確認してからお申し込みください。</p>
         </div>
         <button onClick={applyNow}>申し込みへ進む<CaretRight size={22} weight="bold" /></button>
