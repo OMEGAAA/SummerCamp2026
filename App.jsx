@@ -99,7 +99,7 @@ export function App() {
     <main className="site-shell">
       <header className="topbar">
         <a className="brand" href="#top" aria-label="アローズ栃木店 トップ">
-          <span className="brand-name">ARROWS<br />栃木店</span>
+          <span className="brand-name">エイジェックスポーツ科学総合センター<br />夏期講習</span>
         </a>
         <nav className="nav-links" aria-label="主要ナビゲーション">
           <a href="#features"><Sparkle size={18} weight="fill" />特徴</a>
