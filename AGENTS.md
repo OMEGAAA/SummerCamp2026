@@ -10,6 +10,7 @@ When implementing from a selected generated mock, treat that image as the source
 
 - ヘッダー左上のブランド表記は「エイジェックスポーツ科学総合センター」にする。
 - 予約導線は Google Form ではなく予約サイト `https://center-agk-sp-science.hacomono.jp/home` に遷移する。
+- 予約導線は確認モーダルを挟まず、クリック時に直接外部の予約サイトを開く。
 - スケジュール／空き状況のデータは `src/scheduleData.js` の `schedule` が単一の真実。LP(`src/App.jsx`)と管理ページ(`src/Admin.jsx`)が両方ここを参照する。
 - 管理ページはハッシュルート `#admin`（`src/main.jsx` の Root で分岐）。簡易パスコード方式（`ADMIN_PASSCODE`、現在 `arrows2026`、クライアント側のみ）。
 - 空き状況の運用方針は「データ生成のみ」: 管理ページで編集 → 生成コードを `scheduleData.js` に貼り付け → 再ビルドで公開反映。バックエンドは持たない。

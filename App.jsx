@@ -14,8 +14,6 @@ import {
   SlidersHorizontal,
   Sparkle,
   UsersThree,
-  Warning,
-  X,
 } from "@phosphor-icons/react";
 import heroSrc from "./assets/training-hero.jpg";
 import priceSrc from "./assets/price-training.jpg";
@@ -43,8 +41,6 @@ export function App() {
   const [activeType, setActiveType] = useState("run");
   const [selectedSlot, setSelectedSlot] = useState(initialSelected);
   const [gradeFilter, setGradeFilter] = useState("all");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [toast, setToast] = useState("");
   const [openFaq, setOpenFaq] = useState("faq-1");
 
   const selectedType = classTypes.find((type) => type.id === activeType);
@@ -88,10 +84,6 @@ export function App() {
   }
 
   function applyNow() {
-    setModalOpen(true);
-  }
-
-  function formHandoff() {
     window.open(RESERVATION_SITE_URL, "_blank", "noopener,noreferrer");
   }
 
@@ -344,36 +336,6 @@ export function App() {
         <button onClick={applyNow}>お問い合わせ</button>
       </footer>
 
-      {modalOpen && (
-        <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-          <div className="apply-modal">
-            <button className="modal-close" onClick={() => setModalOpen(false)} aria-label="閉じる"><X size={22} weight="bold" /></button>
-            <p className="panel-kicker">申し込み内容</p>
-            <h2 id="modal-title">予約サイトへ進む前に確認</h2>
-            <div className="modal-summary">
-              <span>{classLabel(selectedSlot)}</span>
-              <strong>8月{selectedSlot.date}日 {selectedSlot.time}</strong>
-              <small>残り{selectedSlot.remaining}名 / 定員10名</small>
-            </div>
-            <label>
-              学年
-              <select defaultValue="">
-                <option value="" disabled>選択してください</option>
-                <option>小学1-3年生</option>
-                <option>小学4-6年生</option>
-                <option>中学生</option>
-              </select>
-            </label>
-            <label>
-              参加者名
-              <input placeholder="お名前" />
-            </label>
-            <button className="form-button" onClick={formHandoff}>予約サイトへ進む<CaretRight size={22} weight="bold" /></button>
-          </div>
-        </div>
-      )}
-
-      {toast && <div className="toast" role="status"><Warning size={19} weight="fill" />{toast}</div>}
     </main>
   );
 }
