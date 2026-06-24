@@ -17,7 +17,6 @@ import {
   Warning,
   X,
 } from "@phosphor-icons/react";
-import logoSrc from "./assets/arrows-logo.png";
 import heroSrc from "./assets/training-hero.jpg";
 import footerSrc from "./assets/training-footer.jpg";
 import {
@@ -100,7 +99,7 @@ export function App() {
     <main className="site-shell">
       <header className="topbar">
         <a className="brand" href="#top" aria-label="アローズ栃木店 トップ">
-          <img src={logoSrc} alt="ARROWS 栃木店" />
+          <span className="brand-name">ARROWS<br />栃木店</span>
         </a>
         <nav className="nav-links" aria-label="主要ナビゲーション">
           <a href="#features"><Sparkle size={18} weight="fill" />特徴</a>
@@ -339,7 +338,7 @@ export function App() {
       </section>
 
       <footer className="site-footer">
-        <img src={logoSrc} alt="ARROWS 栃木店" />
+        <span className="footer-name">ARROWS<br />栃木店</span>
         <span>夏休み期間限定 夏期講習</span>
         <a href="#faq">よくある質問</a>
         <button onClick={applyNow}>お問い合わせ</button>
