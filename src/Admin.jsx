@@ -18,11 +18,29 @@ const ADMIN_PASSCODE = "arrows2026";
 const DRAFT_KEY = "arrows-admin-schedule-draft";
 const SESSION_KEY = "arrows-admin-authed";
 const ROW_KEYS = ["am", "pm", "jr"];
+const EDITABLE_DATES = weeks
+  .filter((week) => !week.break)
+  .flatMap((week) => days.map((day) => week.dates[day.key]))
+  .filter(Boolean);
+const EDITABLE_DATE_SET = new Set(EDITABLE_DATES);
 
 const clone = (obj) => JSON.parse(JSON.stringify(obj));
 
 function activityLabel(activity) {
   return activity === "run" ? "走り方" : "アジリティ";
+}
+
+function hasEntries(dayData) {
+  return !!dayData && ROW_KEYS.some((rowKey) => dayData[rowKey]);
+}
+
+function dateLabel(date) {
+  for (const week of weeks) {
+    for (const day of days) {
+      if (week.dates[day.key] === date) return `8/${date}（${day.label}）`;
+    }
+  }
+  return `8/${date}`;
 }
 
 function statusLabel(entry) {
@@ -127,6 +145,28 @@ export function Admin() {
     updateEntry(date, rowKey, { seats: v });
   }
 
+  function moveScheduleDate(fromDate, raw) {
+    const toDate = parseInt(raw, 10);
+    if (Number.isNaN(toDate) || toDate === fromDate) return;
+    if (!EDITABLE_DATE_SET.has(toDate)) {
+      setNote("その日付は公開LPのカレンダー対象外です。");
+      return;
+    }
+    if (data[toDate] && hasEntries(data[toDate])) {
+      setNote(`${dateLabel(toDate)} には既に開催枠があります。別の日を選んでください。`);
+      return;
+    }
+
+    setData((prev) => {
+      if (!prev[fromDate]) return prev;
+      const next = clone(prev);
+      next[toDate] = next[fromDate];
+      delete next[fromDate];
+      return next;
+    });
+    setNote(`${dateLabel(fromDate)} の開催枠を ${dateLabel(toDate)} に移動しました。`);
+  }
+
   function saveDraft() {
     localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
     setNote("下書きをこのブラウザに保存しました。");
@@ -197,7 +237,7 @@ export function Admin() {
       <header className="admin-head">
         <div>
           <h1>空き状況の編集</h1>
-          <p>残席を変更して「scheduleData.js をダウンロード」→ ダウンロードしたファイルで <code>src/scheduleData.js</code> を丸ごと置き換え → 再ビルドで公開LPに反映されます。</p>
+          <p>残席・休講・開催日を変更して「scheduleData.js をダウンロード」→ ダウンロードしたファイルで <code>src/scheduleData.js</code> を丸ごと置き換え → 再ビルドで公開LPに反映されます。</p>
         </div>
         <div className="admin-head-actions">
           <a className="admin-back" href="#">LPを開く ↗</a>
@@ -231,15 +271,38 @@ export function Admin() {
 
       <div className="admin-weeks">
         {weeks.map((week) => {
-          const hasSlots = !week.break && Object.values(week.dates).some(
-            (d) => d && data[d] && ROW_KEYS.some((rk) => data[d][rk]),
+          const weekEventDates = Object.values(week.dates).filter(
+            (d) => d && hasEntries(data[d]),
           );
+          const hasSlots = !week.break && weekEventDates.length > 0;
           if (!hasSlots) return null;
           return (
             <section className="admin-week" key={week.label}>
               <h2>
                 {week.label} <small>{week.range}</small>
               </h2>
+              <div className="admin-date-controls" aria-label={`${week.label}の開催日変更`}>
+                {weekEventDates.map((date) => (
+                  <label className="admin-date-control" key={date}>
+                    <span>開催日</span>
+                    <select
+                      value={date}
+                      onChange={(e) => moveScheduleDate(date, e.target.value)}
+                      aria-label={`${dateLabel(date)} の開催日を変更`}
+                    >
+                      {EDITABLE_DATES.map((optionDate) => (
+                        <option
+                          key={optionDate}
+                          value={optionDate}
+                          disabled={optionDate !== date && hasEntries(data[optionDate])}
+                        >
+                          {dateLabel(optionDate)}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                ))}
+              </div>
               <div className="admin-grid">
                 <div className="admin-grid-head">
                   <span>時間</span>
