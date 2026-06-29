@@ -3,7 +3,6 @@ import {
   CalendarCheck,
   CaretRight,
   CheckCircle,
-  Clock,
   Funnel,
   Lightning,
   ListChecks,
@@ -39,7 +38,6 @@ const classTypes = [
   { id: "junior", label: "中学生クラス", target: "中学生", tone: "violet", icon: Medal },
 ];
 
-const initialSelected = makeSlot(18, "tue", "pm");
 const RESERVATION_SITE_URL = "https://center-agk-sp-science.hacomono.jp/home";
 
 const reserveSteps = [
@@ -69,9 +67,30 @@ const reserveSteps = [
   },
 ];
 
+function findFirstSlot(typeId, grade = "all") {
+  let fallback = null;
+  for (const week of weeks) {
+    for (const day of days) {
+      for (const row of timeRows) {
+        const slot = makeSlot(week.dates[day.key], day.key, row.key);
+        if (!slot || slot.type !== typeId) continue;
+        if (grade !== "all" && slot.target !== grade) continue;
+        fallback ||= slot;
+        if (!slot.closed && slot.remaining > 0) return slot;
+      }
+    }
+  }
+  return fallback;
+}
+
+function compatibleGrade(typeId, grade) {
+  if (grade === "all") return grade;
+  return typeId === "junior" ? "中学生" : "小学生";
+}
+
 export function App() {
   const [activeType, setActiveType] = useState("run");
-  const [selectedSlot, setSelectedSlot] = useState(initialSelected);
+  const [selectedSlot, setSelectedSlot] = useState(() => findFirstSlot("run"));
   const [gradeFilter, setGradeFilter] = useState("all");
   const [openFaq, setOpenFaq] = useState("faq-1");
 
@@ -92,37 +111,17 @@ export function App() {
     return slots;
   }, [activeType, gradeFilter]);
 
-  const lowCount = filteredSlots.filter((slot) => slot.remaining <= 3).length;
-  const openCount = filteredSlots.filter((slot) => slot.remaining >= 6).length;
-
   function chooseType(typeId) {
+    const nextGrade = compatibleGrade(typeId, gradeFilter);
     setActiveType(typeId);
-    const next = filteredFirstSlot(typeId, gradeFilter);
-    if (next) setSelectedSlot(next);
-  }
-
-  function filteredFirstSlot(typeId, grade) {
-    for (const week of weeks) {
-      for (const day of days) {
-        for (const row of timeRows) {
-          const slot = makeSlot(week.dates[day.key], day.key, row.key);
-          if (!slot || slot.type !== typeId) continue;
-          if (grade !== "all" && slot.target !== grade) continue;
-          return slot;
-        }
-      }
-    }
-    return null;
-  }
-
-  function applyNow() {
-    window.open(RESERVATION_SITE_URL, "_blank", "noopener,noreferrer");
+    setGradeFilter(nextGrade);
+    setSelectedSlot(findFirstSlot(typeId, nextGrade));
   }
 
   return (
     <main className="site-shell">
       <header className="topbar">
-        <a className="brand" href="#top" aria-label="アローズ栃木店 トップ">
+        <a className="brand" href="#top" aria-label="エイジェックスポーツ科学総合センター トップ">
           <span className="brand-name">エイジェックスポーツ科学<br />総合センター</span>
         </a>
         <nav className="nav-links" aria-label="主要ナビゲーション">
@@ -132,10 +131,16 @@ export function App() {
           <a href="#price"><SlidersHorizontal size={18} weight="fill" />料金</a>
           <a href="#faq"><Question size={18} weight="fill" />FAQ</a>
         </nav>
-        <button className="deadline-button" onClick={applyNow}>
+        <a
+          className="deadline-button"
+          href={RESERVATION_SITE_URL}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="予約サイトで申し込む（新しいタブで開きます）"
+        >
           <CalendarCheck size={24} weight="fill" />
           <span><strong>各回３日前締切</strong><small>お早めにお申し込みください</small></span>
-        </button>
+        </a>
       </header>
 
       <section id="top" className="hero-section">
@@ -150,7 +155,15 @@ export function App() {
           </div>
           <div className="hero-actions">
             <a className="primary-cta" href="#booking">空き状況を確認<CaretRight size={22} weight="bold" /></a>
-            <button className="ghost-cta" onClick={applyNow}>予約サイトで申し込み</button>
+            <a
+              className="ghost-cta"
+              href={RESERVATION_SITE_URL}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="予約サイトで申し込む（新しいタブで開きます）"
+            >
+              予約サイトで申し込み
+            </a>
           </div>
         </div>
         <div className="hero-visual" aria-hidden="true">
@@ -162,7 +175,7 @@ export function App() {
       <section id="features" className="feature-strip" aria-label="講習の特徴">
         <Feature icon={PersonSimpleRun} title="走り方が速くなる" text="正しいフォームと加速力を身につける" />
         <Feature icon={Lightning} title="アジリティUP" text="素早い動き・切り返しで運動能力を向上" />
-        <Feature icon={CalendarCheck} title="短期集中プログラム" text="平日を中心に通いやすい4週間" />
+        <Feature icon={CalendarCheck} title="短期集中プログラム" text="都合に合わせて選べる複数日程" />
         <Feature icon={UsersThree} title="少人数制で安心" text="各クラス10名限定の細やかな指導" />
       </section>
 
@@ -172,7 +185,7 @@ export function App() {
           <h2>クラスを選んで空き状況を確認・予約</h2>
         </div>
 
-        <div className="class-tabs" role="tablist" aria-label="クラス種別">
+        <div className="class-tabs" aria-label="クラス種別">
           {classTypes.map((type) => {
             const Icon = type.icon;
             return (
@@ -180,8 +193,7 @@ export function App() {
                 key={type.id}
                 className={`class-tab ${type.tone} ${activeType === type.id ? "active" : ""}`}
                 onClick={() => chooseType(type.id)}
-                role="tab"
-                aria-selected={activeType === type.id}
+                aria-pressed={activeType === type.id}
               >
                 <Icon size={24} weight="fill" />
                 <span>{type.label}</span>
@@ -198,10 +210,14 @@ export function App() {
               <button
                 key={grade}
                 className={gradeFilter === grade ? "selected" : ""}
+                aria-pressed={gradeFilter === grade}
+                disabled={
+                  grade !== "all"
+                  && grade !== (activeType === "junior" ? "中学生" : "小学生")
+                }
                 onClick={() => {
                   setGradeFilter(grade);
-                  const next = filteredFirstSlot(activeType, grade);
-                  if (next) setSelectedSlot(next);
+                  setSelectedSlot(findFirstSlot(activeType, grade));
                 }}
               >
                 {grade === "all" ? "全対象" : grade}
@@ -216,7 +232,11 @@ export function App() {
         </div>
 
         <div className="booking-grid">
-          <div className="schedule-board" aria-label={`${selectedType.label}スケジュール`}>
+          <div
+            id="schedule-panel"
+            className="schedule-board"
+            aria-label={`${selectedType.label}スケジュール`}
+          >
             <div className="calendar-head">
               <span>時間</span>
               {days.map((day) => <span key={day.key}>{day.label}</span>)}
@@ -247,7 +267,7 @@ export function App() {
                             <button
                               key={`${week.label}-${row.key}-${day.key}`}
                               className={`slot-cell ${visible ? status : "empty"} ${isSelected ? "chosen" : ""}`}
-                              disabled={!visible || status === "full"}
+                              disabled={!visible || status === "full" || status === "off"}
                               onClick={() => setSelectedSlot(slot)}
                               aria-label={visible ? `${date}日 ${row.label} ${classLabel(slot)} ${statusText(slot)}` : `${date || ""} 予約枠なし`}
                             >
@@ -268,24 +288,41 @@ export function App() {
 
           <aside className="selection-panel" aria-live="polite">
             <p className="panel-kicker">選択中のクラス</p>
-            <div className="selected-title">
-              {selectedSlot?.activity === "run" ? <PersonSimpleRun size={34} weight="fill" /> : <Lightning size={34} weight="fill" />}
-              <h3>{classLabel(selectedSlot)}</h3>
-            </div>
-            <dl className="selected-details">
-              <div><dt>日程</dt><dd>8月{selectedSlot.date}日（{days.find((day) => day.key === selectedSlot.dayKey)?.label}）</dd></div>
-              <div><dt>時間</dt><dd>{selectedSlot.time}</dd></div>
-              <div><dt>対象</dt><dd>{selectedSlot.target}</dd></div>
-              {selectedSlot.room ? <div><dt>会場</dt><dd>室内練習場</dd></div> : null}
-              <div><dt>定員</dt><dd>10名</dd></div>
-            </dl>
-            <div className="seat-meter">
-              <span>残り人数</span>
-              <div className="meter-rail"><i style={{ width: `${selectedSlot.remaining * 10}%` }} /></div>
-              <strong>{selectedSlot.remaining}名</strong>
-              <small>{selectedSlot.remaining <= 3 ? "残りわずか" : "空きあり"}</small>
-            </div>
-            <button className="panel-cta" onClick={applyNow}>このクラスを選択する<CaretRight size={22} weight="bold" /></button>
+            {selectedSlot && !selectedSlot.closed && selectedSlot.remaining > 0 ? (
+              <>
+                <div className="selected-title">
+                  {selectedSlot.activity === "run" ? <PersonSimpleRun size={34} weight="fill" /> : <Lightning size={34} weight="fill" />}
+                  <h3>{classLabel(selectedSlot)}</h3>
+                </div>
+                <dl className="selected-details">
+                  <div><dt>日程</dt><dd>8月{selectedSlot.date}日（{days.find((day) => day.key === selectedSlot.dayKey)?.label}）</dd></div>
+                  <div><dt>時間</dt><dd>{selectedSlot.time}</dd></div>
+                  <div><dt>対象</dt><dd>{selectedSlot.target}</dd></div>
+                  {selectedSlot.room ? <div><dt>会場</dt><dd>室内練習場</dd></div> : null}
+                  <div><dt>定員</dt><dd>10名</dd></div>
+                </dl>
+                <div className="seat-meter">
+                  <span>残り人数</span>
+                  <div className="meter-rail"><i style={{ width: `${selectedSlot.remaining * 10}%` }} /></div>
+                  <strong>{selectedSlot.remaining}名</strong>
+                  <small>{selectedSlot.remaining <= 3 ? "残りわずか" : "空きあり"}</small>
+                </div>
+                <a
+                  className="panel-cta"
+                  href={RESERVATION_SITE_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="選択したクラスを予約サイトで申し込む（新しいタブで開きます）"
+                >
+                  このクラスを選択する<CaretRight size={22} weight="bold" />
+                </a>
+              </>
+            ) : (
+              <div className="selection-empty">
+                <h3>現在予約できる枠がありません</h3>
+                <p>別のクラスまたは対象を選んで空き状況をご確認ください。</p>
+              </div>
+            )}
             <div className="panel-note">
               <strong>選択のポイント</strong>
               <p>フォーム改善と加速力、または切り返し能力を目的に合わせて選べます。</p>
@@ -312,9 +349,15 @@ export function App() {
           ))}
         </div>
         <div className="steps-cta">
-          <button className="primary-cta" onClick={applyNow}>
+          <a
+            className="primary-cta"
+            href={RESERVATION_SITE_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="予約サイトへ進む（新しいタブで開きます）"
+          >
             予約サイトへ進む<CaretRight size={22} weight="bold" />
-          </button>
+          </a>
           <small>各回3日前締切です。お早めにお申し込みください。</small>
         </div>
       </section>
@@ -322,7 +365,7 @@ export function App() {
       <section className="reason-section">
         <div className="section-heading">
           <p>WHY SUMMER CAMP</p>
-          <h2>夏期講習の3つのポイント</h2>
+          <h2>夏期講習の4つのポイント</h2>
         </div>
         <div className="reason-grid">
           <Reason icon={Medal} title="専門コーチの指導" text="アローズ栃木のスポーツ科学トレーナーが一人ひとりを丁寧に指導。" />
@@ -345,11 +388,11 @@ export function App() {
         <div className="price-cards">
           <article>
             <span>ビジター</span>
-            <strong>2,200<small>円（税込）/ 　1回</small></strong>
+            <strong>2,200<small>円（税込）／1回</small></strong>
           </article>
           <article className="member">
             <span>アローズ会員</span>
-            <strong>1,650<small>円（税込）/ 　1回</small></strong>
+            <strong>1,650<small>円（税込）／1回</small></strong>
           </article>
         </div>
         <img className="price-image" src={priceSrc} alt="トレーニング中の選手" />
@@ -367,11 +410,15 @@ export function App() {
             ["faq-3", "定員は何名ですか？", "各クラス10名です。定員に達し次第、受付終了となります。"],
           ].map(([id, question, answer]) => (
             <article className={`faq-item ${openFaq === id ? "open" : ""}`} key={id}>
-              <button onClick={() => setOpenFaq(openFaq === id ? "" : id)}>
+              <button
+                aria-expanded={openFaq === id}
+                aria-controls={`${id}-answer`}
+                onClick={() => setOpenFaq(openFaq === id ? "" : id)}
+              >
                 <span>{question}</span>
                 <CaretRight size={20} weight="bold" />
               </button>
-              <p>{answer}</p>
+              <p id={`${id}-answer`} hidden={openFaq !== id}>{answer}</p>
             </article>
           ))}
         </div>
@@ -383,13 +430,23 @@ export function App() {
           <h2>予約サイトで申し込み</h2>
           <p>クラスを選んで、空き状況を確認してからお申し込みください。</p>
         </div>
-        <button onClick={applyNow}>申し込みへ進む<CaretRight size={22} weight="bold" /></button>
+        <a
+          href={RESERVATION_SITE_URL}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="予約サイトへ進む（新しいタブで開きます）"
+        >
+          申し込みへ進む<CaretRight size={22} weight="bold" />
+        </a>
         <strong>各回3日前締切</strong>
       </section>
 
       <footer className="site-footer">
-        <span className="footer-name">エイジェックスポーツ科学<br />総合センター</span>
-        <span>夏休み期間限定 夏期講習</span>
+        <div>
+          <span className="footer-name">エイジェックスポーツ科学<br />総合センター</span>
+          <span>夏休み期間限定 夏期講習</span>
+        </div>
+        <small>© 2026 エイジェックスポーツ科学総合センター</small>
       </footer>
 
     </main>

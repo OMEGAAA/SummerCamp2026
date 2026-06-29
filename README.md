@@ -16,9 +16,13 @@ https://omegaaa.github.io/SummerCamp2026/
 npm install      # 依存関係のインストール
 npm run dev      # 開発サーバー (http://127.0.0.1:5173)
 npm run build    # 本番ビルド（単体HTML index.html と dist/ を生成）
+npm run build:exe # Windows用ポータブルEXEを release/ に生成
+npm run verify   # 生成済み納品物の整合性を再検証
 ```
 
-`npm run build` は `scripts/pre.mjs`（ソース入口の復元）→ `vite build` → `scripts/bundle.mjs`（CSS/JSをインライン化した単体HTMLを生成）の順で実行されます。配布用の `index.html`・`assets/`・`dist/` はビルド生成物のため Git 管理対象外です。
+`npm run build` は `scripts/pre.mjs`（ソース入口の復元）→ `vite build` → `scripts/bundle.mjs`（CSS/JSをインライン化した単体HTMLを生成）→ 納品物検証の順で実行されます。
+
+納品・運用手順は [DELIVERY.md](./DELIVERY.md) を参照してください。
 
 ## デプロイ
 

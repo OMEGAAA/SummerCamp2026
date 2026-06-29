@@ -5,7 +5,6 @@ import {
   weeks,
   schedule as defaultSchedule,
   levelMark,
-  buildSlot,
   slotStatus,
 } from "./scheduleData.js";
 // scheduleData.js の元ソース（ビルド時に文字列として取り込む）。
@@ -211,6 +210,14 @@ export function Admin() {
     URL.revokeObjectURL(url);
   }
 
+  function downloadScheduleData() {
+    if (!fullFile) {
+      setNote("ファイル生成に失敗しました。生成コードを手動で反映してください。");
+      return;
+    }
+    downloadFile("scheduleData.js", fullFile);
+  }
+
   if (!authed) {
     return (
       <main className="admin-shell">
@@ -222,9 +229,11 @@ export function Admin() {
             value={pass}
             onChange={(e) => setPass(e.target.value)}
             placeholder="パスコード"
+            aria-label="管理ページのパスコード"
+            autoComplete="current-password"
             autoFocus
           />
-          {authErr && <span className="admin-error">{authErr}</span>}
+          {authErr && <span className="admin-error" role="alert">{authErr}</span>}
           <button type="submit">ログイン</button>
           <a className="admin-back" href="#">← LPに戻る</a>
         </form>
@@ -255,19 +264,16 @@ export function Admin() {
 
       <div className="admin-toolbar">
         <button onClick={saveDraft}>下書き保存（このブラウザ）</button>
-        <button
-          onClick={() => downloadFile("scheduleData.js", fullFile || code)}
-          className="primary"
-        >
+        <button onClick={downloadScheduleData} className="primary">
           scheduleData.js をダウンロード
         </button>
         <button onClick={copyCode}>コードをコピー</button>
         <button onClick={() => downloadFile("schedule.json", JSON.stringify(data, null, 2))}>JSON をダウンロード</button>
         <button onClick={resetDefaults} className="ghost">確定済みに戻す</button>
-        {dirty && <span className="admin-dirty">未反映の変更があります</span>}
+        {dirty && <span className="admin-dirty" role="status">未反映の変更があります</span>}
       </div>
 
-      {note && <div className="admin-note">{note}</div>}
+      {note && <div className="admin-note" role="status">{note}</div>}
 
       <div className="admin-weeks">
         {weeks.map((week) => {
@@ -326,7 +332,7 @@ export function Admin() {
                           <span className="admin-cell-date">8/{date}</span>
                           <span className="admin-cell-label">
                             {activityLabel(entry.activity)}{levelMark(entry.level)}
-                            {entry.room ? " 🏠" : ""}
+                            {entry.room ? "・室内" : ""}
                           </span>
                           <div className="admin-cell-edit">
                             <input

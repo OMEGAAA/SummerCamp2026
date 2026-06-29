@@ -5,6 +5,7 @@ node_modules/
 dist/
 /index.html
 /assets/
+/release/
 
 # QA・作業用の生成物
 qa-screenshots/

@@ -1,19 +1,53 @@
 {
   "name": "arrows-summer-lp",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "エイジェックスポーツ科学総合センター 2026年夏期講習",
+  "author": "エイジェックスポーツ科学総合センター",
   "private": true,
   "type": "module",
+  "main": "desktop/main.cjs",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "node scripts/pre.mjs && vite build && node scripts/bundle.mjs",
+    "build": "node scripts/pre.mjs && vite build && node scripts/bundle.mjs && node scripts/verify-deliverable.mjs",
+    "build:exe": "npm run build && node scripts/build-exe.mjs && node scripts/verify-exe.mjs",
+    "verify": "node scripts/verify-deliverable.mjs",
     "preview": "vite preview --host 127.0.0.1"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
-    "@vitejs/plugin-react": "5.0.4",
-    "playwright": "^1.60.0",
     "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "vite": "6.4.2"
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.4",
+    "electron": "42.5.0",
+    "electron-builder": "26.15.3",
+    "playwright": "^1.60.0",
+    "vite": "^6.4.3"
+  },
+  "build": {
+    "appId": "jp.co.agekke.sports-science.summer-camp-2026",
+    "productName": "2026年 夏期講習",
+    "asar": true,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "desktop/**/*",
+      "index.html",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "AGK-Summer-Camp-2026-${version}-portable.${ext}"
+    }
   }
 }

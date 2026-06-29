@@ -92,7 +92,7 @@ export function levelMark(level) {
 // 任意の schedule オブジェクトから1枠を組み立てる（管理ページの編集中データにも使える）。
 export function buildSlot(scheduleObj, date, dayKey, rowKey) {
   const entry = date && scheduleObj[date] && scheduleObj[date][rowKey];
-  if (!entry || entry.closed) return null;
+  if (!entry) return null;
   const isJunior = rowKey === "jr";
   return {
     id: `${date}-${rowKey}`,
@@ -102,6 +102,7 @@ export function buildSlot(scheduleObj, date, dayKey, rowKey) {
     activity: entry.activity,
     level: entry.level,
     room: !!entry.room,
+    closed: !!entry.closed,
     type: isJunior ? "junior" : entry.activity,
     target: isJunior ? "中学生" : "小学生",
     time: timeRows.find((row) => row.key === rowKey).label,
@@ -116,6 +117,7 @@ export function makeSlot(date, dayKey, rowKey) {
 
 export function slotStatus(slot) {
   if (!slot) return "none";
+  if (slot.closed) return "off";
   if (slot.remaining <= 0) return "full";
   if (slot.remaining <= 3) return "low";
   return "open";
@@ -126,6 +128,7 @@ export function statusText(slot) {
   if (status === "low") return `残り${slot.remaining}名`;
   if (status === "open") return `空き${slot.remaining}名`;
   if (status === "full") return "満員";
+  if (status === "off") return "休講";
   return "-";
 }
 

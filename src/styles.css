@@ -44,9 +44,18 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 3px;
+}
+
 a {
   color: inherit;
   text-decoration: none;
+}
+
+section[id] {
+  scroll-margin-top: 88px;
 }
 
 .site-shell {
@@ -98,7 +107,7 @@ a {
 .primary-cta,
 .ghost-cta,
 .panel-cta,
-.final-cta button,
+.final-cta a,
 .site-footer button,
 .form-button {
   display: inline-flex;
@@ -412,19 +421,6 @@ a {
   transition: transform 160ms ease, opacity 160ms ease, box-shadow 160ms ease;
 }
 
-/* 未選択タブ: タップを促すヒント */
-.class-tab:not(.active)::after {
-  content: "👆 タップ";
-  position: absolute;
-  top: 9px;
-  right: 12px;
-  font-size: 11px;
-  font-weight: 900;
-  color: #fff;
-  opacity: 0.85;
-  pointer-events: none;
-}
-
 .class-tab:not(.active):hover {
   opacity: 0.94;
   transform: translateY(-1px);
@@ -459,9 +455,9 @@ a {
   animation: tab-pulse 1.6s ease-in-out infinite;
 }
 
-/* 選択中タブ: 「✓ 選択中」バッジ */
+/* 選択中タブ */
 .class-tab.active::after {
-  content: "✓ 選択中";
+  content: "選択中";
   position: absolute;
   top: -11px;
   right: 12px;
@@ -487,6 +483,19 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
   .class-tab.active {
     animation: none;
     box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--lime), 0 14px 28px rgba(0, 0, 0, 0.22);
@@ -535,6 +544,12 @@ a {
 .filter-group button.selected {
   color: #fff;
   background: var(--black);
+}
+
+.filter-group button:disabled {
+  color: #98a09b;
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 .legend {
@@ -714,6 +729,11 @@ a {
   color: #f07a00;
 }
 
+.slot-cell.full strong,
+.slot-cell.off strong {
+  color: var(--red);
+}
+
 .slot-cell.empty,
 .slot-cell:disabled {
   color: #a2aaa5;
@@ -886,6 +906,26 @@ a {
   font-size: 13px;
   line-height: 1.6;
   font-weight: 800;
+}
+
+.selection-empty {
+  margin: 16px 0;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.selection-empty h3,
+.selection-empty p {
+  margin: 0;
+}
+
+.selection-empty p {
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 14px;
+  line-height: 1.65;
 }
 
 .reason-section {
@@ -1077,7 +1117,7 @@ a {
   font-weight: 900;
 }
 
-.final-cta button {
+.final-cta a {
   min-height: 58px;
   border: 0;
   border-radius: 7px;
@@ -1086,6 +1126,10 @@ a {
   background: var(--black);
   font-weight: 1000;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
 }
 
 .final-cta strong {
@@ -1102,8 +1146,8 @@ a {
 }
 
 .site-footer {
-  display: grid;
-  grid-template-columns: auto 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 24px;
   min-height: 104px;
@@ -1112,9 +1156,20 @@ a {
   background: var(--black);
 }
 
-.site-footer span {
+.site-footer > div {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.site-footer span,
+.site-footer small {
   color: rgba(255, 255, 255, 0.74);
   font-weight: 800;
+}
+
+.site-footer small {
+  font-size: 11px;
 }
 
 .site-footer a,
@@ -1231,8 +1286,7 @@ a {
   .reason-grid,
   .price-section,
   .price-cards,
-  .final-cta,
-  .site-footer {
+  .final-cta {
     grid-template-columns: 1fr;
   }
 
@@ -1270,6 +1324,12 @@ a {
   .final-cta,
   .site-footer {
     padding: 34px 18px;
+  }
+
+  .site-footer,
+  .site-footer > div {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .final-cta strong {
