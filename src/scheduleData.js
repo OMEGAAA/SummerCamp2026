@@ -35,17 +35,17 @@ export const schedule = {
     pm: { activity: "agility", level: 2, seats: 10 },
     jr: { activity: "agility", level: 1, seats: 10, room: true },
   },
-  4: {
+  5: {
     am: { activity: "run", level: 1, seats: 10 },
     pm: { activity: "run", level: 2, seats: 10 },
     jr: { activity: "run", level: 1, seats: 10 },
   },
-  5: {
+  6: {
     am: { activity: "agility", level: 2, seats: 10 },
     pm: { activity: "agility", level: 3, seats: 10 },
     jr: { activity: "agility", level: 2, seats: 10 },
   },
-  6: {
+  7: {
     am: { activity: "run", level: 2, seats: 10 },
     pm: { activity: "run", level: 3, seats: 10 },
     jr: { activity: "run", level: 2, seats: 10 },
