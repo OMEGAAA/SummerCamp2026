@@ -1,9 +1,8 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
   CalendarCheck,
   CaretRight,
   CheckCircle,
-  Funnel,
   Lightning,
   ListChecks,
   MapPin,
@@ -67,14 +66,13 @@ const reserveSteps = [
   },
 ];
 
-function findFirstSlot(typeId, grade = "all") {
+function findFirstSlot(typeId) {
   let fallback = null;
   for (const week of weeks) {
     for (const day of days) {
       for (const row of timeRows) {
         const slot = makeSlot(week.dates[day.key], day.key, row.key);
         if (!slot || slot.type !== typeId) continue;
-        if (grade !== "all" && slot.target !== grade) continue;
         fallback ||= slot;
         if (!slot.closed && slot.remaining > 0) return slot;
       }
@@ -83,39 +81,16 @@ function findFirstSlot(typeId, grade = "all") {
   return fallback;
 }
 
-function compatibleGrade(typeId, grade) {
-  if (grade === "all") return grade;
-  return typeId === "junior" ? "中学生" : "小学生";
-}
-
 export function App() {
   const [activeType, setActiveType] = useState("run");
   const [selectedSlot, setSelectedSlot] = useState(() => findFirstSlot("run"));
-  const [gradeFilter, setGradeFilter] = useState("all");
   const [openFaq, setOpenFaq] = useState("faq-1");
 
   const selectedType = classTypes.find((type) => type.id === activeType);
-  const filteredSlots = useMemo(() => {
-    const slots = [];
-    weeks.forEach((week) => {
-      days.forEach((day) => {
-        timeRows.forEach((row) => {
-          const slot = makeSlot(week.dates[day.key], day.key, row.key);
-          if (!slot) return;
-          if (activeType !== slot.type) return;
-          if (gradeFilter !== "all" && slot.target !== gradeFilter) return;
-          slots.push(slot);
-        });
-      });
-    });
-    return slots;
-  }, [activeType, gradeFilter]);
 
   function chooseType(typeId) {
-    const nextGrade = compatibleGrade(typeId, gradeFilter);
     setActiveType(typeId);
-    setGradeFilter(nextGrade);
-    setSelectedSlot(findFirstSlot(typeId, nextGrade));
+    setSelectedSlot(findFirstSlot(typeId));
   }
 
   return (
@@ -204,26 +179,6 @@ export function App() {
         </div>
 
         <div className="booking-tools">
-          <div className="filter-group" aria-label="対象フィルター">
-            <Funnel size={19} weight="fill" />
-            {["all", "小学生", "中学生"].map((grade) => (
-              <button
-                key={grade}
-                className={gradeFilter === grade ? "selected" : ""}
-                aria-pressed={gradeFilter === grade}
-                disabled={
-                  grade !== "all"
-                  && grade !== (activeType === "junior" ? "中学生" : "小学生")
-                }
-                onClick={() => {
-                  setGradeFilter(grade);
-                  setSelectedSlot(findFirstSlot(activeType, grade));
-                }}
-              >
-                {grade === "all" ? "全対象" : grade}
-              </button>
-            ))}
-          </div>
           <div className="legend" aria-label="空き状況凡例">
             <span className="legend-open">空きあり</span>
             <span className="legend-low">残りわずか</span>
@@ -260,7 +215,7 @@ export function App() {
                         {days.map((day) => {
                           const date = week.dates[day.key];
                           const slot = makeSlot(date, day.key, row.key);
-                          const visible = slot && slot.type === activeType && (gradeFilter === "all" || slot.target === gradeFilter);
+                          const visible = slot && slot.type === activeType;
                           const status = slotStatus(slot);
                           const isSelected = visible && selectedSlot?.id === slot.id;
                           return (
