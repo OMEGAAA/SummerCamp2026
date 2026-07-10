@@ -34,7 +34,10 @@ npm run build:exe
 3. 残席、休講、開催日を編集する
 4. `scheduleData.js をダウンロード` を押す
 5. ダウンロードしたファイルで `src/scheduleData.js` を置き換える
-6. `npm run build` を実行して公開する
+6. `src/scheduleData.js` をコミットして `main` にpushする
+7. GitHub Actionsの `Deploy to GitHub Pages` が `npm run build` を実行し、LPのカレンダーを自動更新する
+
+ローカル納品物を手元で確認・再生成したい場合だけ `npm run build` を実行してください。GitHub Pagesへの公開反映はpush後のGitHub Actionsが行います。
 
 開催日の変更は、選択した日の全コマをまとめて移動します。既存枠がある日、お盆休み週、公開カレンダー外の日付には移動できません。
 
