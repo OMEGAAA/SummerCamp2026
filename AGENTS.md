@@ -9,6 +9,7 @@ When implementing from a selected generated mock, treat that image as the source
 ## Project decisions
 
 - Hero season badge text should use dark text on the lime background for readability.
+- 料金カードの区分表記は「一般参加」と「アローズ会員特別価格」にする。
 - 管理ページの開催日変更は、同じ日の全コマをまとめて空いている通常週の日付へ移動する。既存枠がある日とお盆休み週は移動先にしない。
 
 - ヘッダー左上のブランド表記は「エイジェックスポーツ科学総合センター」にする。
