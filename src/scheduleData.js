@@ -36,19 +36,19 @@ export const schedule = {
     jr: { activity: "agility", level: 1, seats: 10, room: true },
   },
   5: {
-    am: { activity: "run", level: 1, seats: 9 },
-    pm: { activity: "run", level: 2, seats: 10 },
-    jr: { activity: "run", level: 1, seats: 10 },
-  },
-  6: {
-    am: { activity: "agility", level: 2, seats: 10 },
+    am: { activity: "agility", level: 2, seats: 9 },
     pm: { activity: "agility", level: 3, seats: 10 },
     jr: { activity: "agility", level: 2, seats: 10 },
   },
-  7: {
-    am: { activity: "run", level: 2, seats: 9 },
+  6: {
+    am: { activity: "run", level: 2, seats: 10 },
     pm: { activity: "run", level: 3, seats: 10 },
     jr: { activity: "run", level: 2, seats: 10 },
+  },
+  7: {
+    am: { activity: "run", level: 1, seats: 9 },
+    pm: { activity: "run", level: 2, seats: 10 },
+    jr: { activity: "run", level: 1, seats: 10 },
   },
   17: {
     am: { activity: "agility", level: 3, seats: 9 },
