@@ -31,7 +31,7 @@ export const weeks = [
 // ▼▼▼ ここから管理ページが生成するコードで置き換え可能 ▼▼▼
 export const schedule = {
   3: {
-    am: { activity: "agility", level: 1, seats: 3 },
+    am: { activity: "agility", level: 1, seats: 4 },
     pm: { activity: "agility", level: 2, seats: 9 },
     jr: { activity: "agility", level: 1, seats: 9, room: true },
   },
@@ -41,13 +41,13 @@ export const schedule = {
     jr: { activity: "agility", level: 2, seats: 9 },
   },
   6: {
-    am: { activity: "run", level: 2, seats: 4 },
+    am: { activity: "run", level: 2, seats: 5 },
     pm: { activity: "run", level: 3, seats: 10 },
     jr: { activity: "run", level: 2, seats: 10 },
   },
   7: {
-    am: { activity: "run", level: 1, seats: 5 },
-    pm: { activity: "run", level: 2, seats: 10 },
+    am: { activity: "run", level: 1, seats: 2 },
+    pm: { activity: "run", level: 2, seats: 7 },
     jr: { activity: "run", level: 1, seats: 10 },
   },
   17: {
@@ -61,7 +61,7 @@ export const schedule = {
     jr: { activity: "run", level: 3, seats: 10 },
   },
   19: {
-    am: { activity: "agility", level: 1, seats: 9 },
+    am: { activity: "agility", level: 1, seats: 8 },
     pm: { activity: "agility", level: 2, seats: 10 },
     jr: { activity: "agility", level: 1, seats: 10 },
   },
