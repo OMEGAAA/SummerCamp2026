@@ -36,7 +36,7 @@ export const schedule = {
     jr: { activity: "agility", level: 1, seats: 9, room: true },
   },
   5: {
-    am: { activity: "agility", level: 2, seats: 3 },
+    am: { activity: "agility", level: 2, seats: 2 },
     pm: { activity: "agility", level: 3, seats: 7 },
     jr: { activity: "agility", level: 2, seats: 9 },
   },
