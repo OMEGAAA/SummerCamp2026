@@ -46,8 +46,8 @@ export const schedule = {
     jr: { activity: "run", level: 2, seats: 10 },
   },
   7: {
-    am: { activity: "run", level: 1, seats: 2 },
-    pm: { activity: "run", level: 2, seats: 7 },
+    am: { activity: "run", level: 1, seats: 0 },
+    pm: { activity: "run", level: 2, seats: 6 },
     jr: { activity: "run", level: 1, seats: 10 },
   },
   17: {
@@ -66,7 +66,7 @@ export const schedule = {
     jr: { activity: "agility", level: 1, seats: 10 },
   },
   21: {
-    am: { activity: "run", level: 1, seats: 10 },
+    am: { activity: "run", level: 1, seats: 9 },
     pm: { activity: "run", level: 2, seats: 10 },
     jr: { activity: "run", level: 1, seats: 10 },
   },
