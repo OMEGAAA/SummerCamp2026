@@ -48,26 +48,26 @@ export const schedule = {
   7: {
     am: { activity: "run", level: 1, seats: 0 },
     pm: { activity: "run", level: 2, seats: 6 },
-    jr: { activity: "run", level: 1, seats: 10 },
+    jr: { activity: "run", level: 1, seats: 9 },
   },
   17: {
     am: { activity: "agility", level: 3, seats: 8 },
     pm: { activity: "agility", level: 1, seats: 10 },
-    jr: { activity: "agility", level: 3, seats: 10, room: true },
+    jr: { activity: "agility", level: 3, seats: 9, room: true },
   },
   18: {
     am: { activity: "run", level: 3, seats: 9 },
     pm: { activity: "run", level: 1, seats: 8 },
-    jr: { activity: "run", level: 3, seats: 10 },
+    jr: { activity: "run", level: 3, seats: 9 },
   },
   19: {
-    am: { activity: "agility", level: 1, seats: 8 },
+    am: { activity: "agility", level: 1, seats: 7 },
     pm: { activity: "agility", level: 2, seats: 10 },
     jr: { activity: "agility", level: 1, seats: 10 },
   },
   21: {
-    am: { activity: "run", level: 1, seats: 9 },
-    pm: { activity: "run", level: 2, seats: 10 },
+    am: { activity: "run", level: 1, seats: 8 },
+    pm: { activity: "run", level: 2, seats: 9 },
     jr: { activity: "run", level: 1, seats: 10 },
   },
   24: {
@@ -77,7 +77,7 @@ export const schedule = {
   },
   25: {
     am: { activity: "run", level: 1, seats: 10 },
-    pm: { activity: "run", level: 2, seats: 6 },
+    pm: { activity: "run", level: 2, seats: 5 },
     jr: { activity: "run", level: 1, seats: 10 },
   },
 };
