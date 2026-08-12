@@ -52,12 +52,12 @@ export const schedule = {
   },
   17: {
     am: { activity: "agility", level: 3, seats: 8 },
-    pm: { activity: "agility", level: 1, seats: 10 },
+    pm: { activity: "agility", level: 1, seats: 8 },
     jr: { activity: "agility", level: 3, seats: 8, room: true },
   },
   18: {
     am: { activity: "run", level: 3, seats: 9 },
-    pm: { activity: "run", level: 1, seats: 8 },
+    pm: { activity: "run", level: 1, seats: 6 },
     jr: { activity: "run", level: 3, seats: 8 },
   },
   19: {
